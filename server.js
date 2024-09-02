@@ -20,6 +20,14 @@ app.post('/shortUrls', async (req, res) => {
     await ShortUrl.create({ full: req.body.fullUrl, short: shortId.generate()})
     res.redirect('/')
 })
+app.delete('/deleteUrls/:id', async (req, res) => {
+    try {
+        await ShortUrl.findByIdAndDelete(req.params.id);
+        res.status(200).send() // Send a success response
+    } catch (error) {
+        res.status(500).send({ error: 'Failed to delete URL' });
+    }
+});
 
 app.get('/:shortUrl', async (req, res) =>{
     const shortUrl= await ShortUrl.findOne({ short : req.params.shortUrl});

@@ -31,6 +31,7 @@
             <th>Full Url</th>
             <th>Short Url</th>
             <th>Clicks</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +41,23 @@
               <td><%= num %></td>
               <td><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
               <td><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
-              <td><%= shortUrl.clicks %></td>
+              <td style="padding-left: 1.5vw;"><%= shortUrl.clicks %></td>
+              <td type="button"><i class="fa-solid fa-trash mx-3" onclick="deleteUrl('<%= shortUrl._id %>');"></i></td>
+              <script>
+                function deleteUrl(id) {
+                  fetch(`/deleteUrls/${id}`, {
+                    method: 'DELETE'
+                  })
+                  .then(response => {
+                    if (response.ok) {
+                      window.location.reload(); // Reload the page to reflect the deletion
+                    } else {
+                      alert('Failed to delete the URL');
+                    }
+                  })
+                  .catch(error => console.error('Error:', error));
+                }
+              </script>
             </tr>
             <% num += 1; %>
           <% }) %>
